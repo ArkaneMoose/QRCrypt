@@ -1,15 +1,5 @@
 package us.ga.k12.gwinnett.peachtreeridge.tsa2015.QRCrypt;
 
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.security.InvalidAlgorithmParameterException;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
-
-import javax.crypto.BadPaddingException;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
-
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
@@ -31,11 +21,11 @@ public class Main {
 	}
 
 	public static void main(String[] args) {
-		String plaintext = "Cryptography";
+		String plaintext = "Cryptography is pretty darn hard.";
 		javax.crypto.KeyGenerator keygen;
 		try {
 			keygen = javax.crypto.KeyGenerator.getInstance("AES");
-			keygen.init(256);
+			keygen.init(128);
 			javax.crypto.Cipher cipher;
 			cipher = javax.crypto.Cipher.getInstance("AES/CBC/PKCS5Padding");
 			java.security.Key key = keygen.generateKey();

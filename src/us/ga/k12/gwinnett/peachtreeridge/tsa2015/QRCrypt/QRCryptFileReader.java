@@ -25,16 +25,40 @@ public class QRCryptFileReader {
 		}
 	}
 	
-	public QRCryptFileReader(Path path) throws IOException, InvalidQRCryptFileException {
+	private class QRCryptVersionException extends Exception {
+		private static final long serialVersionUID = 4501079070355740898L;
+		private static final String MESSAGE = "This QRCrypt file is not compatible with this version of QRCrypt.";
+		
+		@Override
+		public String getMessage() {
+			return MESSAGE;
+		}
+	}
+	
+	public QRCryptFileReader(Path path) throws IOException, InvalidQRCryptFileException, QRCryptVersionException {
 		reader = Files.newBufferedReader(path);
 		readHeaders();
 	}
 	
-	public void readHeaders() throws IOException, InvalidQRCryptFileException {
-		CharBuffer magicNumber = CharBuffer.allocate(4);
-		if (reader.read(magicNumber) != 4 || !magicNumber.equals(MAGIC_NUMBER)) throw new InvalidQRCryptFileException();
-		//reader.read(publicKey);
-		//Cipher.getInstance("AES_256/")
+	public void readHeaders() throws IOException, InvalidQRCryptFileException, QRCryptVersionException {
+		CharBuffer buffer;
+		
+		// Magic number; is this really a QRCrypt file?
+		buffer = CharBuffer.allocate(4);
+		if (reader.read(buffer) != 4 || !buffer.equals(MAGIC_NUMBER)) throw new InvalidQRCryptFileException();
+		
+		// Version number; is the QRCrypt file version compatible with this version?
+		buffer = CharBuffer.allocate(1);
+		switch (buffer.charAt(0)) {
+		case 0x00:
+			break;
+		default:
+			throw new QRCryptVersionException();
+		}
+	}
+	
+	public void readPrivateData() {
+		
 	}
 
 }
