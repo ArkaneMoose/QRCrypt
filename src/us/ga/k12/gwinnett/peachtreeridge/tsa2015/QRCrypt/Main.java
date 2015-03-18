@@ -8,10 +8,10 @@ public class Main {
 	
 	public Main(Display display) {
 		Shell shell = new Shell(display);
-		shell.setText("Hello World");
+		shell.setText("QRCrypt");
 		shell.setSize(250, 250);
 		shell.setLayout(new FillLayout());
-		shell.setToolTipText("Hello, world!");
+		shell.setToolTipText("QRCrypt");
 		shell.open();
 		while (!shell.isDisposed()) {
 			if (!display.readAndDispatch()) {
@@ -21,13 +21,13 @@ public class Main {
 	}
 
 	public static void main(String[] args) {
-		String plaintext = "Cryptography is pretty darn hard.";
+		String plaintext = "4d8d13e7be3e87";
 		javax.crypto.KeyGenerator keygen;
 		try {
-			keygen = javax.crypto.KeyGenerator.getInstance("AES");
-			keygen.init(128);
+			keygen = javax.crypto.KeyGenerator.getInstance("AES_256");
+			keygen.init(256);
 			javax.crypto.Cipher cipher;
-			cipher = javax.crypto.Cipher.getInstance("AES/CBC/PKCS5Padding");
+			cipher = javax.crypto.Cipher.getInstance("AES__256/CBC/PKCS5Padding");
 			java.security.Key key = keygen.generateKey();
 			cipher.init(javax.crypto.Cipher.ENCRYPT_MODE, key, new javax.crypto.spec.IvParameterSpec("1111111111111111".getBytes()));
 			System.out.println(plaintext);
@@ -40,6 +40,7 @@ public class Main {
 			System.out.println("Key length: " + key.getEncoded().length);
 		} catch (Exception e) {
 			e.printStackTrace();
+			System.exit(1);
 		}
 		java.security.KeyPairGenerator keypairgen;
 		try {
@@ -60,10 +61,8 @@ public class Main {
 			System.out.println("Private key length: " + keypair.getPrivate().getEncoded().length);
 		} catch (Exception e) {
 			e.printStackTrace();
+			System.exit(1);
 		}
-		Display display = new Display();
-		new Main(display);
-		display.dispose();
 	}
 
 }
